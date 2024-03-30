@@ -1,4 +1,5 @@
-﻿using MVC_Shop.DMO;
+﻿using Microsoft.EntityFrameworkCore;
+using MVC_Shop.DMO;
 using MVC_Shop.Models.DTO;
 
 namespace MVC_Shop.Repository
@@ -25,6 +26,10 @@ namespace MVC_Shop.Repository
                 Price=k.ListPrice
             }).ToList();
 
+
+            // photoları çekelim
+            List<int> ids = result.Select(s => s.Id).ToList();
+            List<byte[]> photos = _context.ProductProductPhotos.Include(s => s.ProductPhoto).Where(s=>ids.Contains(s.ProductId)).Select(k=>k.ProductPhoto.LargePhoto).ToList();
             return result;
         }
     }
