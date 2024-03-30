@@ -38,6 +38,7 @@ namespace MVC_Shop.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult AddSepet(int Id)
         {
             try

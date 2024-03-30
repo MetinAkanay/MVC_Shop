@@ -87,15 +87,23 @@
 
     <script>
     $(document).ready(function () {
-
         $(".btnSepet").click(function () {
-
             var productId = $(this).attr("product");
-
-            var sepetValue = parseInt($(".sepet").html());
-            sepetValue++;
-            $(".sepet").html(sepetValue);
-
+            debugger;
+            $.post({
+                type: 'POST',
+                dataType: 'json',
+                url: 'https://localhost:7197/home/AddSepet',
+                data: { Id: productId },
+                success: function (response) {
+                    var sepetValue = parseInt($(".sepet").html());
+                    sepetValue++;
+                    $(".sepet").html(sepetValue);
+                },
+                error: function (response) {
+                    debugger;
+                }
+            });
         });
     });
     </script>

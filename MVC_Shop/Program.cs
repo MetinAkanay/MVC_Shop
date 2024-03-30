@@ -19,7 +19,11 @@ namespace MVC_Shop
             builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
+            
+            builder.Services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromDays(1);
+            });
 
             var app = builder.Build();
 
@@ -35,6 +39,7 @@ namespace MVC_Shop
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
