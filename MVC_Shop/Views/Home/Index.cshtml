@@ -1,5 +1,9 @@
 ﻿@using MVC_Shop.Models.ViewModel
 @model PscViewModel
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="#!">Start Bootstrap</a>
@@ -22,8 +26,8 @@
             <form class="d-flex">
                 <button class="btn btn-outline-dark" type="submit">
                     <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    Sepet
+                    <span class="badge bg-dark text-white ms-1 rounded-pill sepet">0</span>
                 </button>
             </form>
         </div>
@@ -47,7 +51,7 @@
                 @foreach(var item in Model.Products)
             {
                     <div class="col mb-5">
-                        <div class="card h-100">
+                        <div class="card border-success h-100">
                             <!-- Product image-->
                             @{
                                 var base64 = Convert.ToBase64String(item.Photo);
@@ -61,11 +65,11 @@
                                 <h5 class="fw-bolder">@item.Name</h5>
                                 <!-- Product price-->
                                 $@item.Price
-                            </div>
+                            </div>                            
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                                <div class="text-center"><a product="@item.Id" class="btnSepet btn btn-outline-info mt-auto">Sepete Ekle</a></div>
                         </div>
                     </div>
                 </div>
@@ -79,6 +83,19 @@
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
 </footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
+
+
+    <script>
+    $(document).ready(function () {
+
+        $(".btnSepet").click(function () {
+
+            var productId = $(this).attr("product");
+
+            var sepetValue = parseInt($(".sepet").html());
+            sepetValue++;
+            $(".sepet").html(sepetValue);
+
+        });
+    });
+    </script>

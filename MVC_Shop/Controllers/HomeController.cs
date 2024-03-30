@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVC_Shop.Models;
 using MVC_Shop.Models.ViewModel;
 using MVC_Shop.Service;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace MVC_Shop.Controllers
@@ -29,8 +30,44 @@ namespace MVC_Shop.Controllers
             model.PSCModel = _productSubCategoryService.GetAll();
             model.Products = _productService.GetProductBySubCategoryId(categoryId);
 
-            return View("Index",model);
+            return View("Index", model);
         }
+
+        public IActionResult Sepet()
+        {
+            return View();
+        }
+
+        public IActionResult AddSepet(int Id)
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("SepetSession") != null)
+                {
+                    // Ýkinci kez session' ý kullanýyorsak
+                    var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
+                    sepetList.Add(Id);
+
+                    var jsonsepet = JsonConvert.SerializeObject(sepetList);
+                    HttpContext.Session.SetString("sepet", jsonsepet);
+
+                }
+                else
+                {
+                    // Ýlk kez kullanýyorsak
+                    List<int> sepets = new List<int> { Id };
+                    var jsonsepet = JsonConvert.SerializeObject(sepets);
+                    HttpContext.Session.SetString("sepet", jsonsepet);
+
+                }
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
+
 
         public IActionResult Privacy()
         {
