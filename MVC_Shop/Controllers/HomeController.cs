@@ -43,7 +43,7 @@ namespace MVC_Shop.Controllers
         {
             try
             {
-                if (HttpContext.Session.GetString("SepetSession") != null)
+                if (HttpContext.Session.GetString("sepet") != null)
                 {
                     // Ýkinci kez session' ý kullanýyorsak
                     var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
