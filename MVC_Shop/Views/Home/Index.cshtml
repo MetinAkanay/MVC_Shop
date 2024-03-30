@@ -46,10 +46,14 @@
             {
                 @foreach(var item in Model.Products)
             {
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            @{
+                                var base64 = Convert.ToBase64String(item.Photo);
+                                var imgSrc = string.Format("data:image/gif;base64,{0}", base64);
+                            }
+                        <img class="card-img-top" src=@imgSrc alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">

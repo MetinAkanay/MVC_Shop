@@ -19,11 +19,12 @@ namespace MVC_Shop.Repository
 
         public List<ProductDTO> GetProductBySubCategoryId(int SubCategoryId)
         {
-            var result = _context.Products.Where(s => s.ProductSubcategoryId == SubCategoryId).Select(k => new ProductDTO()
+            var result = _context.Products.Include(m=>m.ProductProductPhotos).ThenInclude(k=>k.ProductPhoto).Where(s => s.ProductSubcategoryId == SubCategoryId).Select(k => new ProductDTO()
             {
-                Id=k.ProductId,
-                Name=k.Name,
-                Price=k.ListPrice
+                Id = k.ProductId,
+                Name = k.Name,
+                Price = k.ListPrice,
+                Photo = k.ProductProductPhotos.Where(s=>s.ProductId == s.ProductId).Select(k=>k.ProductPhoto.LargePhoto).SingleOrDefault()
             }).ToList();
 
 
