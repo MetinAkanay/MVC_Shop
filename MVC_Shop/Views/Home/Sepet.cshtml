@@ -48,7 +48,7 @@
                                     <!-- Product price-->
                                     $@item.Price
                                     <hr />
-                                    <div class="badge bg-dark text-white ms-1 rounded-pill sepet">Ürün Adeti @item.StockQuantity</div>
+                                    <div class="badge bg-dark text-white ms-1 rounded-pill sepet">Ürün Adeti @item.Quantity</div>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -60,6 +60,7 @@
                 }
             }
 
+
         </div>
     </div>
 </section>
@@ -67,5 +68,23 @@
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
 </footer>
+
+    <script>
+    $(document).ready(function () {
+        $(".btnSepet").click(function () {
+            var id = $(this).attr("product");
+            $.ajax({
+                url: "https://localhost:7197/home/DeleteSepet",
+                type: "POST",
+                data: { id: id },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        });
+    });
+    </script>
+
+
 
 

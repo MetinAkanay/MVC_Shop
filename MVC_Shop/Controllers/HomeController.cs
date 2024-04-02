@@ -110,6 +110,30 @@ namespace MVC_Shop.Controllers
             }
         }
 
+        // kullanýcýnýn sepetten ürün sildiði zaman çalýþacak olan action
+        [HttpPost]
+        public IActionResult DeleteSepet(int Id)
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("sepet") != null && HttpContext.Session.Keys.Count() > 0)
+                {
+                    // Ýkinci kez session' ý kullanýyorsak
+                    var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
+                    sepetList.Remove(Id);
+
+                    var jsonsepet = JsonConvert.SerializeObject(sepetList);
+                    HttpContext.Session.SetString("sepet", jsonsepet);
+
+                }
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

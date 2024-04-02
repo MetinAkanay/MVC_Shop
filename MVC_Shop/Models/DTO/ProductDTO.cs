@@ -7,6 +7,8 @@
 
         public decimal Price { get; set; }
         public byte[] Photo { get; set; }
+        public int StockSafetylevel { get; set; }
+        public int Quantity { get; set; }
 
     }
 }
