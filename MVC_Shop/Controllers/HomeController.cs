@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVC_Shop.DMO;
 using MVC_Shop.Models;
+using MVC_Shop.Models.DTO;
 using MVC_Shop.Models.ViewModel;
 using MVC_Shop.Service;
 using Newtonsoft.Json;
@@ -11,10 +14,13 @@ namespace MVC_Shop.Controllers
     {
         private IProductCategoryService _productSubCategoryService;
         private IProductService _productService;
-        public HomeController(IProductCategoryService productSubCategoryService, IProductService productService)
+        private IBasketService _basketService;
+
+        public HomeController(IProductCategoryService productSubCategoryService, IProductService productService, IBasketService basketService)
         {
             _productSubCategoryService = productSubCategoryService;
             _productService = productService;
+            _basketService = basketService;
         }
 
         public IActionResult Index()
@@ -30,12 +36,37 @@ namespace MVC_Shop.Controllers
             model.PSCModel = _productSubCategoryService.GetAll();
             model.Products = _productService.GetProductBySubCategoryId(categoryId);
 
+            // sayfa refresh olduðunda, sepetteki ürün miktarý sýfýrlanýyor düzeltelim.
+
+            // sepette ürün varsa ürün sayýsýný bulalým.
+            if(HttpContext.Session.GetString("sepet") != null)
+            {
+                string json = HttpContext.Session.GetString("sepet");
+                var sessionObject = JsonConvert.DeserializeObject<List<int>>(json);
+                
+                // session içerisindeki ürün adedini bulup, view modele mapledik
+                model.SessionCount = sessionObject.Count;
+                 
+            }
+
             return View("Index", model);
         }
 
         public IActionResult Sepet()
         {
-            return View();
+            //önce sepette olan ürünleri ýd deðerlerini yakalayalým
+            if (HttpContext.Session.Keys.Count()> 0)
+            {
+                var jsonBasket = HttpContext.Session.GetString("sepet");
+
+                List<int> basketIds = JsonConvert.DeserializeObject<List<int>>(jsonBasket);
+                var baskets = _basketService.GetProductById(basketIds);
+
+                return View(baskets);
+            }
+
+            return RedirectToAction("Index");
+
         }
 
         [HttpPost]
@@ -43,7 +74,7 @@ namespace MVC_Shop.Controllers
         {
             try
             {
-                if (HttpContext.Session.GetString("sepet") != null)
+                if (HttpContext.Session.GetString("sepet") != null && HttpContext.Session.Keys.Count()>0)
                 {
                     // Ýkinci kez session' ý kullanýyorsak
                     var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
@@ -68,7 +99,6 @@ namespace MVC_Shop.Controllers
                 return Json(false);
             }
         }
-
 
         public IActionResult Privacy()
         {

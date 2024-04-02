@@ -23,13 +23,17 @@
                     </ul>
                 </li>
             </ul>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
+            <div class="d-flex">
+                <a href="https://localhost:7197/home/Sepet">
+                <button class="border-success btn btn-outline-info">
+                    
                     <i class="bi-cart-fill me-1"></i>
                     Sepet
-                    <span class="badge bg-dark text-white ms-1 rounded-pill sepet">0</span>
-                </button>
-            </form>
+                    <!-- Action tarafında, session'dan ilgili değeri alıp, view model aracılığıyla -->
+                        <span class="badge bg-dark text-white ms-1 rounded-pill sepet">@Model.SessionCount</span>
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 </nav>

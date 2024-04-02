@@ -19,6 +19,8 @@ namespace MVC_Shop
             builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddScoped<IBasketService, BasketService>();
             
             builder.Services.AddSession(option =>
             {
@@ -41,6 +43,9 @@ namespace MVC_Shop
             app.UseRouting();
             app.UseSession();
 
+            
+            
+
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -48,6 +53,8 @@ namespace MVC_Shop
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+
         }
     }
 }
