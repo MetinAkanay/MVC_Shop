@@ -118,7 +118,7 @@ namespace MVC_Shop.Controllers
             {
                 if (HttpContext.Session.GetString("sepet") != null && HttpContext.Session.Keys.Count() > 0)
                 {
-                    // Ýkinci kez session' ý kullanýyorsak
+
                     var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
                     sepetList.Remove(Id);
 
@@ -134,6 +134,28 @@ namespace MVC_Shop.Controllers
             }
         }
 
+        // kullanýcý sepepetteki ürünü sepet sekmesindeyken adeti arttýrmak istediði zaman çalýþacak olan action
+        [HttpPost]
+        public IActionResult IncreaseSepet(int Id)
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("sepet") != null && HttpContext.Session.Keys.Count() > 0)
+                {
+                    var sepetList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("sepet"));
+                    sepetList.Add(Id);
+
+                    var jsonsepet = JsonConvert.SerializeObject(sepetList);
+                    HttpContext.Session.SetString("sepet", jsonsepet);
+
+                }
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
         public IActionResult Privacy()
         {
             return View();
